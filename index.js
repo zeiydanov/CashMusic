@@ -1,4 +1,3 @@
-```js
 require('dotenv').config();
 
 const fs = require('fs');
@@ -43,9 +42,7 @@ const commandFiles = fs
     .filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles) {
-
     try {
-
         const filePath = path.join(commandsPath, file);
         const command = require(filePath);
 
@@ -53,43 +50,46 @@ for (const file of commandFiles) {
             command.data &&
             command.execute
         ) {
-
             client.commands.set(
                 command.data.name,
                 command
             );
 
             console.log(
-                `✅ Komut yüklendi: ${command.data.name}`
+                '✅ Komut yüklendi: ' +
+                command.data.name
             );
 
         } else {
-
             console.log(
-                `⚠️ ${file} geçerli bir komut değil.`
+                '⚠️ ' +
+                file +
+                ' geçerli bir komut değil.'
             );
-
         }
 
     } catch (error) {
-
         console.error(
-            `❌ ${file} yüklenirken hata oluştu:`,
+            '❌ ' +
+            file +
+            ' yüklenirken hata oluştu:',
             error
         );
-
     }
 }
 
 console.log(
-    `📦 Toplam komut: ${client.commands.size}`
+    '📦 Toplam komut: ' +
+    client.commands.size
 );
 
 // =========================
 // LAVALINK AYAR KONTROLÜ
 // =========================
 
-console.log('🔧 Lavalink ayarları kontrol ediliyor...');
+console.log(
+    '🔧 Lavalink ayarları kontrol ediliyor...'
+);
 
 console.log(
     'Host:',
@@ -107,15 +107,21 @@ console.log(
 );
 
 if (!process.env.LAVALINK_HOST) {
-    console.error('❌ LAVALINK_HOST Railway Variables içinde yok!');
+    console.error(
+        '❌ LAVALINK_HOST Railway Variables içinde yok!'
+    );
 }
 
 if (!process.env.LAVALINK_PORT) {
-    console.error('❌ LAVALINK_PORT Railway Variables içinde yok!');
+    console.error(
+        '❌ LAVALINK_PORT Railway Variables içinde yok!'
+    );
 }
 
 if (!process.env.LAVALINK_PASSWORD) {
-    console.error('❌ LAVALINK_PASSWORD Railway Variables içinde yok!');
+    console.error(
+        '❌ LAVALINK_PASSWORD Railway Variables içinde yok!'
+    );
 }
 
 // =========================
@@ -123,7 +129,6 @@ if (!process.env.LAVALINK_PASSWORD) {
 // =========================
 
 client.lavalink = new LavalinkManager({
-
     nodes: [
         {
             id: 'CashMusic-Lavalink',
@@ -147,13 +152,13 @@ client.lavalink = new LavalinkManager({
     ],
 
     sendToShard: (guildId, payload) => {
-
         const guild =
             client.guilds.cache.get(guildId);
 
         if (!guild) {
             console.log(
-                `⚠️ Guild bulunamadı: ${guildId}`
+                '⚠️ Guild bulunamadı: ' +
+                guildId
             );
             return;
         }
@@ -164,13 +169,9 @@ client.lavalink = new LavalinkManager({
     autoSkip: true,
 
     client: {
-
         id: process.env.CLIENT_ID,
-
         username: 'CashMusic'
-
     }
-
 });
 
 // =========================
@@ -178,20 +179,14 @@ client.lavalink = new LavalinkManager({
 // =========================
 
 client.on('raw', data => {
-
     try {
-
         client.lavalink.sendRawData(data);
-
     } catch (error) {
-
         console.error(
             '❌ Lavalink raw event hatası:',
             error
         );
-
     }
-
 });
 
 // =========================
@@ -201,11 +196,10 @@ client.on('raw', data => {
 client.lavalink.nodeManager.on(
     'connect',
     node => {
-
         console.log(
-            `🎧 Lavalink bağlandı: ${node.id}`
+            '🎧 Lavalink bağlandı: ' +
+            node.id
         );
-
     }
 );
 
@@ -216,16 +210,15 @@ client.lavalink.nodeManager.on(
 client.lavalink.nodeManager.on(
     'disconnect',
     (node, reason) => {
-
         console.log(
-            `❌ Lavalink bağlantısı kesildi: ${node.id}`
+            '❌ Lavalink bağlantısı kesildi: ' +
+            node.id
         );
 
         console.log(
             'Sebep:',
             reason
         );
-
     }
 );
 
@@ -236,13 +229,13 @@ client.lavalink.nodeManager.on(
 client.lavalink.nodeManager.on(
     'error',
     (node, error) => {
-
         console.error(
-            `❌ Lavalink hatası (${node.id}):`
+            '❌ Lavalink hatası (' +
+            node.id +
+            '):'
         );
 
         console.error(error);
-
     }
 );
 
@@ -251,24 +244,32 @@ client.lavalink.nodeManager.on(
 // =========================
 
 client.once('ready', async () => {
-
     console.log('');
     console.log('================================');
-    console.log(`🎵 ${client.user.tag} AKTİF!`);
-    console.log(`🆔 Bot ID: ${client.user.id}`);
-    console.log(`🏠 Sunucu sayısı: ${client.guilds.cache.size}`);
-    console.log(`📦 Komut sayısı: ${client.commands.size}`);
+    console.log(
+        '🎵 ' +
+        client.user.tag +
+        ' AKTİF!'
+    );
+    console.log(
+        '🆔 Bot ID: ' +
+        client.user.id
+    );
+    console.log(
+        '🏠 Sunucu sayısı: ' +
+        client.guilds.cache.size
+    );
+    console.log(
+        '📦 Komut sayısı: ' +
+        client.commands.size
+    );
     console.log('================================');
     console.log('');
 
     try {
-
         client.lavalink.init({
-
             id: client.user.id,
-
             username: client.user.username
-
         });
 
         console.log(
@@ -276,14 +277,11 @@ client.once('ready', async () => {
         );
 
     } catch (error) {
-
         console.error(
             '❌ Lavalink init hatası:',
             error
         );
-
     }
-
 });
 
 // =========================
@@ -295,7 +293,10 @@ client.on(
     async interaction => {
 
         console.log(
-            `📥 Interaction geldi: ${interaction.type} ${interaction.commandName || ''}`
+            '📥 Interaction geldi: ' +
+            interaction.type +
+            ' ' +
+            (interaction.commandName || '')
         );
 
         if (!interaction.isChatInputCommand()) {
@@ -303,7 +304,8 @@ client.on(
         }
 
         console.log(
-            `⚡ Komut çalışıyor: /${interaction.commandName}`
+            '⚡ Komut çalışıyor: /' +
+            interaction.commandName
         );
 
         const command =
@@ -312,77 +314,69 @@ client.on(
             );
 
         if (!command) {
-
             console.error(
-                `❌ Komut bulunamadı: ${interaction.commandName}`
+                '❌ Komut bulunamadı: /' +
+                interaction.commandName
             );
 
-            if (!interaction.replied && !interaction.deferred) {
-
+            if (
+                !interaction.replied &&
+                !interaction.deferred
+            ) {
                 await interaction.reply({
-                    content: '❌ Bu komut CashMusic tarafından bulunamadı.',
+                    content:
+                        '❌ Bu komut CashMusic tarafından bulunamadı.',
                     ephemeral: true
                 });
-
             }
 
             return;
         }
 
         try {
-
             await command.execute(
                 interaction,
                 client
             );
 
             console.log(
-                `✅ Komut tamamlandı: /${interaction.commandName}`
+                '✅ Komut tamamlandı: /' +
+                interaction.commandName
             );
 
         } catch (error) {
-
             console.error(
-                `❌ /${interaction.commandName} komut hatası:`,
+                '❌ /' +
+                interaction.commandName +
+                ' komut hatası:',
                 error
             );
 
             try {
-
                 if (
                     interaction.replied ||
                     interaction.deferred
                 ) {
-
                     await interaction.editReply({
                         content:
                             '❌ Komut çalıştırılırken hata oluştu.'
                     });
 
                 } else {
-
                     await interaction.reply({
-
                         content:
                             '❌ Komut çalıştırılırken hata oluştu.',
-
                         ephemeral: true
-
                     });
-
                 }
 
             } catch (replyError) {
-
                 console.error(
                     '❌ Discord cevap gönderme hatası:',
                     replyError
                 );
-
             }
-
         }
-
     }
 );
 
@@ -390,36 +384,31 @@ client.on(
 // DISCORD LOGIN
 // =========================
 
-console.log('🔐 Discord giriş yapılıyor...');
+console.log(
+    '🔐 Discord giriş yapılıyor...'
+);
 
 if (!process.env.TOKEN) {
-
     console.error(
         '❌ TOKEN Railway Variables içinde bulunamadı!'
     );
 
     process.exit(1);
-
 }
 
 client.login(
     process.env.TOKEN
 )
 .then(() => {
-
     console.log(
         '✅ Discord login başarılı.'
     );
-
 })
 .catch(error => {
-
     console.error(
         '❌ Discord login başarısız:',
         error
     );
 
     process.exit(1);
-
 });
-```
